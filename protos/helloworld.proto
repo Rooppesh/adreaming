@@ -47,4 +47,5 @@ message Row {
 // The response message containing the greetings
 message Result {
   repeated Row results = 1;
+  int32 size = 2;
 }
