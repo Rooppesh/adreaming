@@ -32,18 +32,19 @@ message Request {
   int32 rowOffset = 1; 
 }
 
+message Row {
+  string tconst = 1;
+  string titleType = 2;
+  string primaryTitle = 3;
+  string originalTitle = 4;
+  bool isAdult = 5;
+  string startYear = 6;
+  string endYear = 7;
+  string runtimeMinutes = 8;
+  string genres = 9;
+}
+
 // The response message containing the greetings
 message Result {
-  message Row {
-    string tconst = 1;
-    string titleType = 2;
-    string primaryTitle = 3;
-    string originalTitle = 4;
-    bool isAdult = 5;
-    string startYear = 6;
-    string endYear = 7;
-    string runtimeMinutes = 8;
-    string genres = 9;
-  }
   repeated Row results = 1;
 }

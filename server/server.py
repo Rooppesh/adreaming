@@ -15,35 +15,47 @@
 
 from concurrent import futures
 import logging
+from sqlite3 import Row
 import pandas
 import grpc
 import helloworld_pb2
 import helloworld_pb2_grpc
+import time
+import psutil
 
+class Getter(helloworld_pb2_grpc.GetterServicer):
 
-class Greeter(helloworld_pb2_grpc.GreeterServicer):
-
-    def SayHello(self, request, context):
+    def GetIMDBData(self, request, context):
         imdbData = pandas.read_csv("../data/title_basics.csv", header=1, skiprows=request.rowOffset)
 
         # imdbDataSize = find length of DF
         # currentBandwidth = add logic to find current bandwidth
         # numberOfPackets = add logic to find number of packets to split the dataset into depending on currentBandwidth 
         # numberOfRowsPerPacket = len(imdbData)/numberOfPackets
-
+        print(psutil.cpu_times)
+        value = psutil.net_io_counters().bytes_sent + psutil.net_io_counters().bytes_recv
+        bandwidth = value/1024./1024.*8
+        print(bandwidth)
         resultObject = helloworld_pb2.Result()
         for i in range(request.rowOffset, request.rowOffset+10):
             dataPacket = imdbData.iloc[i]
-            print(dataPacket)
-            print(dataPacket[0])
-            # resultObject.results.add(tconst=dataPacket[0], );
+            rowobject = resultObject.results.add()
+            rowobject.tconst=str(dataPacket[0])
+            rowobject.titleType=str(dataPacket[1])
+            rowobject.primaryTitle=str(dataPacket[2])
+            rowobject.originalTitle=str(dataPacket[3])
+            rowobject.isAdult=dataPacket[4]
+            rowobject.startYear=str(dataPacket[5])
+            rowobject.endYear=str(dataPacket[6])
+            rowobject.runtimeMinutes=str(dataPacket[7])
+            rowobject.genres=str(dataPacket[8])   
 
-        return helloworld_pb2.HelloReply(message='Hello, %s!' % request.name)
+        return resultObject
 
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    helloworld_pb2_grpc.add_GreeterServicer_to_server(Greeter(), server)
+    helloworld_pb2_grpc.add_GetterServicer_to_server(Getter(), server)
     server.add_insecure_port('[::]:50051')
     server.start()
     server.wait_for_termination()
