@@ -5,7 +5,7 @@ import grpc
 import helloworld_pb2 as helloworld__pb2
 
 
-class GreeterStub(object):
+class GetterStub(object):
     """The greeting service definition.
     """
 
@@ -15,18 +15,18 @@ class GreeterStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.SayHello = channel.unary_unary(
-                '/helloworld.Greeter/SayHello',
-                request_serializer=helloworld__pb2.HelloRequest.SerializeToString,
-                response_deserializer=helloworld__pb2.HelloReply.FromString,
+        self.GetIMDBData = channel.unary_unary(
+                '/helloworld.Getter/GetIMDBData',
+                request_serializer=helloworld__pb2.Request.SerializeToString,
+                response_deserializer=helloworld__pb2.Result.FromString,
                 )
 
 
-class GreeterServicer(object):
+class GetterServicer(object):
     """The greeting service definition.
     """
 
-    def SayHello(self, request, context):
+    def GetIMDBData(self, request, context):
         """Sends a greeting
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -34,26 +34,26 @@ class GreeterServicer(object):
         raise NotImplementedError('Method not implemented!')
 
 
-def add_GreeterServicer_to_server(servicer, server):
+def add_GetterServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'SayHello': grpc.unary_unary_rpc_method_handler(
-                    servicer.SayHello,
-                    request_deserializer=helloworld__pb2.HelloRequest.FromString,
-                    response_serializer=helloworld__pb2.HelloReply.SerializeToString,
+            'GetIMDBData': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetIMDBData,
+                    request_deserializer=helloworld__pb2.Request.FromString,
+                    response_serializer=helloworld__pb2.Result.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'helloworld.Greeter', rpc_method_handlers)
+            'helloworld.Getter', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
  # This class is part of an EXPERIMENTAL API.
-class Greeter(object):
+class Getter(object):
     """The greeting service definition.
     """
 
     @staticmethod
-    def SayHello(request,
+    def GetIMDBData(request,
             target,
             options=(),
             channel_credentials=None,
@@ -63,8 +63,8 @@ class Greeter(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/helloworld.Greeter/SayHello',
-            helloworld__pb2.HelloRequest.SerializeToString,
-            helloworld__pb2.HelloReply.FromString,
+        return grpc.experimental.unary_unary(request, target, '/helloworld.Getter/GetIMDBData',
+            helloworld__pb2.Request.SerializeToString,
+            helloworld__pb2.Result.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

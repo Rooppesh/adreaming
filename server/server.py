@@ -15,7 +15,7 @@
 
 from concurrent import futures
 import logging
-
+import pandas
 import grpc
 import helloworld_pb2
 import helloworld_pb2_grpc
@@ -24,6 +24,20 @@ import helloworld_pb2_grpc
 class Greeter(helloworld_pb2_grpc.GreeterServicer):
 
     def SayHello(self, request, context):
+        imdbData = pandas.read_csv("../data/title_basics.csv", header=1, skiprows=request.rowOffset)
+
+        # imdbDataSize = find length of DF
+        # currentBandwidth = add logic to find current bandwidth
+        # numberOfPackets = add logic to find number of packets to split the dataset into depending on currentBandwidth 
+        # numberOfRowsPerPacket = len(imdbData)/numberOfPackets
+
+        resultObject = helloworld_pb2.Result()
+        for i in range(request.rowOffset, request.rowOffset+10):
+            dataPacket = imdbData.iloc[i]
+            print(dataPacket)
+            print(dataPacket[0])
+            # resultObject.results.add(tconst=dataPacket[0], );
+
         return helloworld_pb2.HelloReply(message='Hello, %s!' % request.name)
 
 

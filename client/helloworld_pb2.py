@@ -14,35 +14,46 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10helloworld.proto\x12\nhelloworld\"\x1c\n\x0cHelloRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x1d\n\nHelloReply\x12\x0f\n\x07message\x18\x01 \x01(\t2I\n\x07Greeter\x12>\n\x08SayHello\x12\x18.helloworld.HelloRequest\x1a\x16.helloworld.HelloReply\"\x00\x42\x36\n\x1bio.grpc.examples.helloworldB\x0fHelloWorldProtoP\x01\xa2\x02\x03HLWb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10helloworld.proto\x12\nhelloworld\"\x1c\n\x07Request\x12\x11\n\trowOffset\x18\x01 \x01(\x05\"\xe6\x01\n\x06Result\x12\'\n\x07results\x18\x01 \x03(\x0b\x32\x16.helloworld.Result.Row\x1a\xb2\x01\n\x03Row\x12\x0e\n\x06tconst\x18\x01 \x01(\t\x12\x11\n\ttitleType\x18\x02 \x01(\t\x12\x14\n\x0cprimaryTitle\x18\x03 \x01(\t\x12\x15\n\roriginalTitle\x18\x04 \x01(\t\x12\x0f\n\x07isAdult\x18\x05 \x01(\x08\x12\x11\n\tstartYear\x18\x06 \x01(\t\x12\x0f\n\x07\x65ndYear\x18\x07 \x01(\t\x12\x16\n\x0eruntimeMinutes\x18\x08 \x01(\t\x12\x0e\n\x06genres\x18\t \x01(\t2B\n\x06Getter\x12\x38\n\x0bGetIMDBData\x12\x13.helloworld.Request\x1a\x12.helloworld.Result\"\x00\x42\x36\n\x1bio.grpc.examples.helloworldB\x0fHelloWorldProtoP\x01\xa2\x02\x03HLWb\x06proto3')
 
 
 
-_HELLOREQUEST = DESCRIPTOR.message_types_by_name['HelloRequest']
-_HELLOREPLY = DESCRIPTOR.message_types_by_name['HelloReply']
-HelloRequest = _reflection.GeneratedProtocolMessageType('HelloRequest', (_message.Message,), {
-  'DESCRIPTOR' : _HELLOREQUEST,
+_REQUEST = DESCRIPTOR.message_types_by_name['Request']
+_RESULT = DESCRIPTOR.message_types_by_name['Result']
+_RESULT_ROW = _RESULT.nested_types_by_name['Row']
+Request = _reflection.GeneratedProtocolMessageType('Request', (_message.Message,), {
+  'DESCRIPTOR' : _REQUEST,
   '__module__' : 'helloworld_pb2'
-  # @@protoc_insertion_point(class_scope:helloworld.HelloRequest)
+  # @@protoc_insertion_point(class_scope:helloworld.Request)
   })
-_sym_db.RegisterMessage(HelloRequest)
+_sym_db.RegisterMessage(Request)
 
-HelloReply = _reflection.GeneratedProtocolMessageType('HelloReply', (_message.Message,), {
-  'DESCRIPTOR' : _HELLOREPLY,
+Result = _reflection.GeneratedProtocolMessageType('Result', (_message.Message,), {
+
+  'Row' : _reflection.GeneratedProtocolMessageType('Row', (_message.Message,), {
+    'DESCRIPTOR' : _RESULT_ROW,
+    '__module__' : 'helloworld_pb2'
+    # @@protoc_insertion_point(class_scope:helloworld.Result.Row)
+    })
+  ,
+  'DESCRIPTOR' : _RESULT,
   '__module__' : 'helloworld_pb2'
-  # @@protoc_insertion_point(class_scope:helloworld.HelloReply)
+  # @@protoc_insertion_point(class_scope:helloworld.Result)
   })
-_sym_db.RegisterMessage(HelloReply)
+_sym_db.RegisterMessage(Result)
+_sym_db.RegisterMessage(Result.Row)
 
-_GREETER = DESCRIPTOR.services_by_name['Greeter']
+_GETTER = DESCRIPTOR.services_by_name['Getter']
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
   DESCRIPTOR._serialized_options = b'\n\033io.grpc.examples.helloworldB\017HelloWorldProtoP\001\242\002\003HLW'
-  _HELLOREQUEST._serialized_start=32
-  _HELLOREQUEST._serialized_end=60
-  _HELLOREPLY._serialized_start=62
-  _HELLOREPLY._serialized_end=91
-  _GREETER._serialized_start=93
-  _GREETER._serialized_end=166
+  _REQUEST._serialized_start=32
+  _REQUEST._serialized_end=60
+  _RESULT._serialized_start=63
+  _RESULT._serialized_end=293
+  _RESULT_ROW._serialized_start=115
+  _RESULT_ROW._serialized_end=293
+  _GETTER._serialized_start=295
+  _GETTER._serialized_end=361
 # @@protoc_insertion_point(module_scope)
