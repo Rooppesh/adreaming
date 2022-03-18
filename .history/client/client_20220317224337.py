@@ -36,20 +36,24 @@ def run():
 
     with grpc.insecure_channel('169.254.211.61:50051') as channel:
         stub = helloworld_pb2_grpc.GetterStub(channel)
-        
-        while row_count < 4194304: 
-            row_count += int((sum(1 for row in fileReader))/8) 
-            # row_count = int(row_count/8)
-            print("wrote row " + str(row_count))
-            # row_count = int((row_count - (row_count%8))/8)
-            beforeTime = time.time() 
-            response = stub.GetIMDBData(helloworld_pb2.Request(rowOffset=row_count))
-            afterTime = time.time()
-            fileAppender.write(str(response.results))
-            # print("Time elapsed for write " + str(itr) + ": " + str(afterTime-beforeTime))
-            yAxisWriter.write(str(afterTime-beforeTime)+"\n")
-            itr = itr+1
-    
+        currentBandwidth = findBandwidth()
+
+        if currentBandwidth >= 80 : 
+            while row_count < 4194304: 
+                row_count += int((sum(1 for row in fileReader))/8) 
+                # row_count = int(row_count/8)
+                print("wrote row " + str(row_count))
+                # row_count = int((row_count - (row_count%8))/8)
+                beforeTime = time.time() 
+                response = stub.GetIMDBData(helloworld_pb2.Request(rowOffset=row_count))
+                afterTime = time.time()
+                fileAppender.write(str(response.results))
+                # print("Time elapsed for write " + str(itr) + ": " + str(afterTime-beforeTime))
+                yAxisWriter.write(str(afterTime-beforeTime)+"\n")
+                itr = itr+1
+        elif currentBandwidth >= 64:
+
+        elif currentBandwidth >=
     fileReader.close()
     fileAppender.close()
 

@@ -22,6 +22,7 @@ import helloworld_pb2
 import helloworld_pb2_grpc
 import time
 import psutil
+import findBandwidth from bandwidth
 
 class Getter(helloworld_pb2_grpc.GetterServicer):
 
@@ -41,9 +42,7 @@ class Getter(helloworld_pb2_grpc.GetterServicer):
 
         resultObject = helloworld_pb2.Result()
         
-        #find bandwidth
-        value = psutil.net_io_counters(pernic=False)
-        currentBandwidth = (value[0]/1024./1024.)
+        currentBandwidth = findBandwidth()
        
         if currentBandwidth >= 80: 
             offSet = 10000

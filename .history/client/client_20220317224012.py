@@ -35,8 +35,7 @@ def run():
     yAxisWriter = open("../data/y_axis.csv", "a")
 
     with grpc.insecure_channel('169.254.211.61:50051') as channel:
-        stub = helloworld_pb2_grpc.GetterStub(channel)
-        
+       stub = helloworld_pb2_grpc.GetterStub(channel)
         while row_count < 4194304: 
             row_count += int((sum(1 for row in fileReader))/8) 
             # row_count = int(row_count/8)

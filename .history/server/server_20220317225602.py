@@ -25,6 +25,12 @@ import psutil
 
 class Getter(helloworld_pb2_grpc.GetterServicer):
 
+    def returnBandwidth():
+        # value = psutil.net_io_counters().bytes_sent + psutil.net_io_counters().bytes_recv
+        value = psutil.net_io_counters(pernic=False)
+        # bandwidth = value/1024./1024.*8
+        return (value[0]/1024./1024.)`
+
     def GetIMDBData(self, request, context):
         imdbData = pandas.read_csv("../data/title_basics.csv", header=1, skiprows=request.rowOffset)
 
@@ -41,9 +47,7 @@ class Getter(helloworld_pb2_grpc.GetterServicer):
 
         resultObject = helloworld_pb2.Result()
         
-        #find bandwidth
-        value = psutil.net_io_counters(pernic=False)
-        currentBandwidth = (value[0]/1024./1024.)
+        currentBandwidth = returnBandwidth()
        
         if currentBandwidth >= 80: 
             offSet = 10000

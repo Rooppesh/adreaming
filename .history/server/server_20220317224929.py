@@ -22,6 +22,7 @@ import helloworld_pb2
 import helloworld_pb2_grpc
 import time
 import psutil
+import findBandwidth from bandwidth
 
 class Getter(helloworld_pb2_grpc.GetterServicer):
 
@@ -33,28 +34,16 @@ class Getter(helloworld_pb2_grpc.GetterServicer):
         # numberOfPackets = add logic to find number of packets to split the dataset into depending on currentBandwidth 
         # numberOfRowsPerPacket = len(imdbData)/numberOfPackets
 
-        # print(psutil.cpu_percent(5))
+        print(psutil.cpu_percent(5))
 
         # value = psutil.net_io_counters().bytes_sent + psutil.net_io_counters().bytes_recv
         # bandwidth = value/1024./1024.*8
         # print(bandwidth)
 
         resultObject = helloworld_pb2.Result()
-        
-        #find bandwidth
-        value = psutil.net_io_counters(pernic=False)
-        currentBandwidth = (value[0]/1024./1024.)
-       
-        if currentBandwidth >= 80: 
-            offSet = 10000
-        
-        elif currentBandwidth >= 64: 
-            offSet = 8000
-        
-        else: 
-            offSet = 5000
-        
-        for i in range(request.rowOffset, request.rowOffset+offSet):
+        currentBandwidth = 
+
+        for i in range(request.rowOffset, request.rowOffset+5000):
             dataPacket = imdbData.iloc[i]
             rowobject = resultObject.results.add()
             rowobject.tconst=str(dataPacket[0])

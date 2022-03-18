@@ -32,29 +32,13 @@ class Getter(helloworld_pb2_grpc.GetterServicer):
         # currentBandwidth = add logic to find current bandwidth
         # numberOfPackets = add logic to find number of packets to split the dataset into depending on currentBandwidth 
         # numberOfRowsPerPacket = len(imdbData)/numberOfPackets
-
-        # print(psutil.cpu_percent(5))
-
+        print(psutil.cpu_percent(5))
         # value = psutil.net_io_counters().bytes_sent + psutil.net_io_counters().bytes_recv
         # bandwidth = value/1024./1024.*8
         # print(bandwidth)
-
         resultObject = helloworld_pb2.Result()
         
-        #find bandwidth
-        value = psutil.net_io_counters(pernic=False)
-        currentBandwidth = (value[0]/1024./1024.)
-       
-        if currentBandwidth >= 80: 
-            offSet = 10000
-        
-        elif currentBandwidth >= 64: 
-            offSet = 8000
-        
-        else: 
-            offSet = 5000
-        
-        for i in range(request.rowOffset, request.rowOffset+offSet):
+        for i in range(request.rowOffset, request.rowOffset+5000):
             dataPacket = imdbData.iloc[i]
             rowobject = resultObject.results.add()
             rowobject.tconst=str(dataPacket[0])
@@ -77,6 +61,7 @@ def serve():
     server.add_insecure_port('[::]:50051')
     server.start()
     server.wait_for_termination()
+
 
 if __name__ == '__main__':
     logging.basicConfig()
