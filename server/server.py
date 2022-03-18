@@ -32,12 +32,12 @@ class Getter(helloworld_pb2_grpc.GetterServicer):
         # currentBandwidth = add logic to find current bandwidth
         # numberOfPackets = add logic to find number of packets to split the dataset into depending on currentBandwidth 
         # numberOfRowsPerPacket = len(imdbData)/numberOfPackets
-        print(psutil.cpu_times)
-        value = psutil.net_io_counters().bytes_sent + psutil.net_io_counters().bytes_recv
-        bandwidth = value/1024./1024.*8
-        print(bandwidth)
+        print(psutil.cpu_percent(5))
+        # value = psutil.net_io_counters().bytes_sent + psutil.net_io_counters().bytes_recv
+        # bandwidth = value/1024./1024.*8
+        # print(bandwidth)
         resultObject = helloworld_pb2.Result()
-        for i in range(request.rowOffset, request.rowOffset+10):
+        for i in range(request.rowOffset, request.rowOffset+5000):
             dataPacket = imdbData.iloc[i]
             rowobject = resultObject.results.add()
             rowobject.tconst=str(dataPacket[0])
@@ -48,8 +48,9 @@ class Getter(helloworld_pb2_grpc.GetterServicer):
             rowobject.startYear=str(dataPacket[5])
             rowobject.endYear=str(dataPacket[6])
             rowobject.runtimeMinutes=str(dataPacket[7])
-            rowobject.genres=str(dataPacket[8])   
-
+            rowobject.genres=str(dataPacket[8])
+            
+        print(psutil.cpu_percent(5))
         return resultObject
 
 
